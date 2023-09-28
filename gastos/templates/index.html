@@ -2,5 +2,51 @@
 {% block title %}Gastos de casa{% endblock %}
 
 {% block content %}
-    <h1>Starting the app</h1>
+    <h1>Gastos</h1>
+    <form action="#" method="post">
+        {{ form.csrf_token }}
+        <ul>
+            <li>
+                {{ form.quando.label }}
+                {{ form.quando }}
+            </li>
+            <li>
+                {{ form.quanto.label }}
+                {{ form.quanto(placeholder_="R$ 0,00") }}
+            </li>
+            <li>
+                {{ form.descricao.label }}
+                {{ form.descricao(placeholder_="Descreva brevemente esse gasto...") }}
+            </li>
+            <li>
+                {{ form.parcelado.label }}
+                <div class="switch">
+                    <label>
+                        Não
+                        {{ form.parcelado }}
+                        <span class="lever"></span>
+                        Sim
+                    </label>
+                </div>
+            </li>
+            <li>
+                {{ form.recorrente.label }}
+                <div class="switch">
+                    <label>
+                        Não
+                        {{ form.recorrente }}
+                        <span class="lever"></span>
+                        Sim
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="right-align">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                        Salvar
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </form>
 {% endblock %}
