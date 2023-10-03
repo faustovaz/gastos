@@ -29,6 +29,10 @@
                     </label>
                 </div>
             </li>
+            <li class="hide">
+                {{ form.parcelas.label }}
+                {{ form.parcelas(placeholder_="Foram quantas parcelas?") }}
+            </li>
             <li>
                 {{ form.recorrente.label }}
                 <div class="switch">
@@ -49,4 +53,5 @@
             </li>
         </ul>
     </form>
+    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
 {% endblock %}
