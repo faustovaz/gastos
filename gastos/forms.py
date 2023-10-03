@@ -9,3 +9,4 @@ class GastoForm(FlaskForm):
     parcelado = BooleanField('O pagamento foi parcelado?')
     parcelas = IntegerField('Quantas parcelas?')
     recorrente = BooleanField('O Pagamento é recorrente?')
+    tags = StringField('Tags')
