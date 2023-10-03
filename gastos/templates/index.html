@@ -3,6 +3,11 @@
 
 {% block content %}
     <h1>Gastos</h1>
+    {% if form.errors %}
+        <div class="card-panel white-text red darken1">
+            Erro ao salvar gasto.
+        </div>
+    {% endif %}
     <form action="#" method="post">
         {{ form.csrf_token }}
         <ul>
@@ -29,9 +34,17 @@
                     </label>
                 </div>
             </li>
-            <li class="hide">
+            <li class="hide {{'form_error' if form.parcelas.errors }}">
                 {{ form.parcelas.label }}
                 {{ form.parcelas(placeholder_="Foram quantas parcelas?") }}
+                {% if form.parcelas.errors %}
+                    <ul>
+                    {% for error in form.parcelas.errors %}
+                            <li style="color: #f44336"> - {{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                <span class="red"></span>
             </li>
             <li>
                 {{ form.recorrente.label }}

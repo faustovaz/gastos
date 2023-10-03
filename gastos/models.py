@@ -1,12 +1,27 @@
 from . import database
 
-class Gasto(database.Model):
+class GastoMensal(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     quando = database.Column(database.Date)
     quanto = database.Column(database.Float)
     descricao = database.Column(database.String)
     parcelado = database.Column(database.Boolean)
-    recorrente = database.Column(database.Boolean)
+    parcela_repr = database.Column(database.String)
+    tags = database.Column(database.String)
+    gasto_recorrente_id = database.Column(database.Integer, database.ForeignKey('gasto_recorrente.id'))
 
     def __repr__(self):
-        return f'<Gasto id={self.id}, quando={self.quando}, quanto={self.quanto}>'
+        return f'<Gasto Mensal id={self.id}, quando={self.quando}, quanto={self.quanto}>'
+
+
+class GastoRecorrente(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    quando = database.Column(database.Date)
+    quanto = database.Column(database.Float)
+    descricao = database.Column(database.String)
+    tags = database.Column(database.String)
+
+    def __repr__(self):
+        return f'<Gasto Recorrente id={self.id}, quando={self.quando}, quanto={self.quanto}>'
+
+

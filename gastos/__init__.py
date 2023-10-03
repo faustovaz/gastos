@@ -13,7 +13,7 @@ def create_app():
 
     database.init_app(app)
 
-    from .models import Gasto
+    from .models import GastoMensal, GastoRecorrente
     with app.app_context():
         if not path.exists(f'gastos/{DATABASE_NAME}'):
             database.create_all()
