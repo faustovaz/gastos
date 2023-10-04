@@ -9,7 +9,47 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/gastos.css') }}">
 </head>
 <body>
-    
+    <nav>
+        <div class="nav-wrapper teal lighten-1">
+            <a class="brand-logo" href="/">
+                Gastos
+            </a>
+            <a class="sidenav-trigger" href="#" data-target="mobile-version">
+                <i class="material-icons">menu</i>
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#" title="Adicionar gasto"><i class="material-icons">add_circle</i></a></li>
+                <li><a href="#" title="Gastos mensais"><i class="material-icons">calendar_month</i></a></li>
+                <li><a href="#" title="Gastos Recorrentes"><i class="material-icons">wifi_protected_setup</i></a></li>
+                <li><a href="#" title="Minha conta"><i class="material-icons">person</i></a></li>
+                <li><a href="#" title="Sair"><i class="material-icons">logout</i></a></li>
+            </ul>
+            <ul id="mobile-version" class="sidenav teal lighten-1">
+                <li class="teal lighten-1">
+                    <h4 class="white-text center-align">Gastos</h4>
+                </li>
+                <li class="teal lighten-1">
+                    <a href="#" class="white-text"><i class="material-icons white-text">add_circle</i>Adicionar</a>
+                    <hr style="width: 90%; color: white;"/>
+                </li>
+                <li class="teal lighten-1">
+                    <a href="#" class="white-text"><i class="material-icons white-text">calendar_month</i>Gastos Mensais</a>
+                    <hr style="width: 90%; color: white;"/>
+                </li>
+                <li class="teal lighten-1">
+                    <a href="#" class="white-text"><i class="material-icons white-text">wifi_protected_setup</i>Gastos Recorrentes</a>
+                    <hr style="width: 90%; color: white;"/>
+                </li>
+                <li class="teal lighten-1">
+                    <a href="#" class="white-text"><i class="material-icons white-text">person</i>Minha conta</a>
+                    <hr style="width: 90%; color: white;"/>
+                </li>
+                <li class="teal lighten-1">
+                    <a href="#" class="white-text"><i class="material-icons white-text">logout</i>Sair</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -34,5 +74,6 @@
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>      
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
