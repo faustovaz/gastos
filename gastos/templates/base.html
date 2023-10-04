@@ -50,6 +50,14 @@
             </ul>
         </div>
     </nav>
+    <nav style="margin-bottom: 10%; margin-top: 2px;">
+        <div class="nav-wrapper teal lighten-3">
+            <div class="col s12" style="padding-left: 10px;">
+                <a class="breadcrumb" href="#">Gastos</a>
+                <a class="breadcrumb" href="#">{% block fnname %}fnname{% endblock %}</a>
+            </div>
+        </div>
+    </nav>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
