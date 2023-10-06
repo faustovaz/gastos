@@ -50,11 +50,13 @@
             </ul>
         </div>
     </nav>
-    <nav style="margin-bottom: 10%; margin-top: 2px;">
+    <nav style="margin-bottom: 2%; margin-top: 2px;">
         <div class="nav-wrapper teal lighten-3">
             <div class="col s12" style="padding-left: 10px;">
                 <a class="breadcrumb" href="#">Gastos</a>
-                <a class="breadcrumb" href="#">{% block fnname %}fnname{% endblock %}</a>
+                {% block fnname %}
+                    fnname
+                {% endblock %}
             </div>
         </div>
     </nav>
