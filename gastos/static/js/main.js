@@ -1,13 +1,20 @@
 (function(){
 
     document.addEventListener('DOMContentLoaded', function(){
-        var elements = document.querySelectorAll(".sidenav");
-        var instances = M.Sidenav.init(elements, {});
+        let elements = document.querySelectorAll(".sidenav");
+        let instances = M.Sidenav.init(elements, {});
 
-        var btns = document.querySelectorAll('.fixed-action-btn');
-        var btnsInstances = M.FloatingActionButton.init(btns, {direction: 'left', 
-            hoverEnabled: true, 
-            toolbarEnabled: true});
+        let btn = document.querySelector('.fixed-action-btn');
+        let floatingBtn = M.FloatingActionButton.init(btn);
+        let opened = false;
+
+        if (floatingBtn) {
+            floatingBtn.el.addEventListener('click', (evt) => {
+                opened ? floatingBtn.close() : floatingBtn.open();
+                opened = !opened;
+            });
+   
+        }
     });
 
 })();
