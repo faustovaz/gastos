@@ -6,200 +6,27 @@
 {% endblock %}
 
 {% block content %}
+{% for idx in range(0, gastosMensaisView.grid | length, 4) %}
     <div class="row">
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Janeiro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
+        {% for gastoView in gastosMensaisView.grid[idx:idx+4] %}
+            <div class="col s6 m6 l3">
+                <div class="card">
+                    <div class="card-content black-text">
+                        <span class="card-title left-align teal-text">{{ gastoView.month_name }}</span>
+                        <div class="white red-text right-align bold">
+                            <h6>R$ {{ "%.2f"|format(gastoView.total) }}</h6>
+                        </div>
+                    </div>
+                    <div class="card-action left-align teal lighten-2">
+                        <a href="/monthly/{{ gastoView.link }}">
+                            <i class="material-icons white-text">search</i>
+                        </a>
                     </div>
                 </div>
-                <div class="card-action left-align teal lighten-2">
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Fevereiro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>    
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Março</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Abril</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+            </div>  
+        {% endfor %}
     </div>
-
-    <div class="row">
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Maio</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2">
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Junho</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>    
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Julho</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Agosto</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Setembro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2">
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Outubro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>    
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Novembro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col s6 m6 l3">
-            <div class="card">
-                <div class="card-content black-text">
-                    <span class="card-title left-align teal-text">Dezembro</span>
-                    <div class="white red-text right-align bold">
-                        <h6>R$ 5546,00</h6>
-                    </div>
-                </div>
-                <div class="card-action left-align teal lighten-2"> 
-                    <a href="#">
-                        <i class="material-icons white-text">search</i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+{% endfor %}
 
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large green" href="#">

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from .forms import GastoForm 
 from .services import GastoService
+from .helpers import GastosMensaisView
 
 views = Blueprint('views', __name__)
 
@@ -17,7 +18,9 @@ def add_new():
 @views.route("/")
 @views.route("/monthly")
 def monthly():
-    return render_template("gastos_mensais.html")
+    gastoService = GastoService()
+    all = gastoService.list_by_year(2023)
+    return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(2023, all))
 
 @views.route("/recurrent")
 def recurrent():
