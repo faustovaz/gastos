@@ -19,7 +19,7 @@
             </li>
             <li>
                 {{ form.quanto.label }}
-                {{ form.quanto(placeholder_="R$ 0,00") }}
+                {{ form.quanto(placeholder_="R$ 0,00", pattern_="^\d+(\.|\,)\d{2}$") }}
             </li>
             <li>
                 {{ form.descricao.label }}
