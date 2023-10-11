@@ -2,7 +2,7 @@
 {% block title %}Gastos de casa{% endblock %}
 {% block fnname %}
 <a class="breadcrumb" href="#">Mensais</a>
-<a class="breadcrumb" href="#">2023</a>
+<a class="breadcrumb" href="#">{{ gastosMensaisView.year }}</a>
 {% endblock %}
 
 {% block content %}
@@ -34,12 +34,12 @@
         </a>
         <ul>
             <li>
-                <a class="btn-floating teal" href="#">
+                <a class="btn-floating teal" href="/monthly/{{ gastosMensaisView.year - 1 }}">
                     <i class="material-icons">chevron_left</i>
                 </a>
             </li>
             <li>
-                <a class="btn-floating teal" href="#">
+                <a class="btn-floating teal" href="/monthly/{{ gastosMensaisView.year + 1 }}">
                     <i class="material-icons">chevron_right</i>
                 </a>
             </li>
