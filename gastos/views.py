@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for
 from .forms import GastoForm 
 from .services import GastoService
 from .helpers import GastosMensaisView
+from functools import reduce
 
 views = Blueprint('views', __name__)
 
@@ -24,7 +25,10 @@ def monthly():
 
 @views.route("/recurrent")
 def recurrent():
-    return render_template("gastos_recorrentes.html")
+    gastoService = GastoService()
+    recorrentes = gastoService.all_recorrentes()
+    total = reduce(lambda acc, gasto: acc + gasto.quanto, recorrentes, 0)
+    return render_template("gastos_recorrentes.html", gastos=recorrentes, total=total)
 
 @views.route("/account")
 def account():

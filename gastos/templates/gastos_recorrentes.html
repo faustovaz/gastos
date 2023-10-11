@@ -1,6 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Gastos de casa{% endblock %}
-{% block fnname %}Gastos Recorrentes{% endblock %}
 
+{% block title %}Gastos de casa{% endblock %}
+{% block fnname %}
+<a class="breadcrumb" href="#">Recorrentes</a>
+{% endblock %}
 {% block content %}
+
+    {% if gastos|length > 0 %}
+        <table class="striped highlight">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gasto in gastos %}
+                    <tr>
+                        <td>{{ gasto.descricao }}</td>
+                        <td>R$ {{ "%.2f"|format(gasto.quanto) }}</td>
+                        <td>{{ gasto.quando.strftime("%d/%m/%Y") }}</td>
+                        <td>
+                            <a href="#">
+                                <i class="material-icons">search</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4" class="right-align">
+                        Total: R$ {{ "%.2f"|format(total) }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <div class="center-align">
+            Por enquanto nenhum gasto recorrente informado.
+        </div>
+    {% endif %}
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large green" href="#">
+            <i class="material-icons">app_registration</i>
+        </a>
+        <ul>
+            <li>
+                <a class="btn-floating teal" href="/add">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+
 {% endblock %}
