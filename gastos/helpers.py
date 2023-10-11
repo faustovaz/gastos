@@ -1,3 +1,4 @@
+from datetime import date
 
 class GastosMensaisView:
     def __init__(self, year, values):
@@ -28,4 +29,8 @@ def months():
         12: "Dezembro"
     }
 
+def shouldInclude(date1, date2):
+    first_date = date(date1.year, date1.month, 1)
+    second_date = date(date2.year, date2.month, 1)
+    return first_date <= second_date
 

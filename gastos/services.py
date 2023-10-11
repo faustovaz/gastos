@@ -1,9 +1,11 @@
 from dateutil.relativedelta import relativedelta
+from datetime import date
+import functools
+from itertools import groupby
+from sqlalchemy.sql import extract
 from . import database
 from .models import GastoMensal, GastoRecorrente
-from sqlalchemy.sql import extract
-from itertools import groupby
-import functools
+from .helpers import shouldInclude
 
 class GastoService():
 
@@ -26,12 +28,13 @@ class GastoService():
 
     def list_by_year(self, year):
         all_mensais = self.all_mensais_by_year(year)
-        all_recorrentes = self.all_recorrentes()
+        recorrentes = self.all_recorrentes()
         all_months = {}
         for month in range(1, 13):
-            values = list(map(lambda gasto: gasto.quanto, all_mensais.get(month, [])))
-            values = values + list(map(lambda gasto: gasto.quanto, all_recorrentes))
-            total = functools.reduce(lambda x,y: x+y, values, 0)
+            totals = list(map(lambda gasto: gasto.quanto, all_mensais.get(month, [])))
+            filtered_recorrentes = list(filter(lambda g: shouldInclude(g.quando, date(year, month, 1)), recorrentes))
+            totals = totals + list(map(lambda gasto: gasto.quanto, filtered_recorrentes))
+            total = functools.reduce(lambda x,y: x+y, totals, 0)
             all_months.update({month: total})
         all_months.update({year: year})
         return all_months
