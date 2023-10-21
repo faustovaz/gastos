@@ -2,7 +2,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 import functools
 from itertools import groupby
-from sqlalchemy.sql import extract, desc
+from sqlalchemy.sql import extract, asc
 from . import database
 from .models import GastoMensal, GastoRecorrente
 from .helpers import shouldInclude
@@ -60,7 +60,7 @@ class GastoService():
                 .query(GastoMensal) \
                 .filter(extract('month', GastoMensal.quando) == month) \
                 .filter(extract('year', GastoMensal.quando) == year) \
-                .order_by(desc(GastoMensal.quanto)) \
+                .order_by(asc(GastoMensal.quanto)) \
                 .all()
 
     def find_by_id(self, id):
