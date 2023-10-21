@@ -1,3 +1,4 @@
 # Gastos
 
-# App para controlar gastos
+A simple and small webapp written with python and flask
+
