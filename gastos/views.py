@@ -17,6 +17,15 @@ def add_new():
         return redirect(url_for('views.add_new'))
     return render_template("form.html", form=gastoForm)
 
+@views.route("/edit/<id>", methods=['GET'])
+def edit(id):
+    gastoService = GastoService()
+    gasto = gastoService.find_by_id(id)
+    gastoForm = GastoForm()
+    if gasto:
+        gastoForm = GastoForm(obj=gasto)
+    return render_template("form.html", form=gastoForm)
+
 @views.route("/")
 @views.route("/monthly/")
 @views.route("/monthly/<year>")

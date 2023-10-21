@@ -63,6 +63,11 @@ class GastoService():
                 .order_by(desc(GastoMensal.quanto)) \
                 .all()
 
+    def find_by_id(self, id):
+        return database \
+                .session \
+                .get(GastoMensal, id)
+
     def _saveGastoMensal(self):
         gasto = GastoMensal()
         self.gastoForm.populate_obj(gasto)
