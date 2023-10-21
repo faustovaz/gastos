@@ -15,7 +15,7 @@ def add_new():
         gastoService.save()
         flash('Gasto adicionado com sucesso!', category='success')
         return redirect(url_for('views.add_new'))
-    return render_template("form.html", form=gastoForm)
+    return render_template("add.html", form=gastoForm)
 
 @views.route("/edit/<id>", methods=['GET'])
 def edit(id):
@@ -24,7 +24,7 @@ def edit(id):
     gastoForm = GastoForm()
     if gasto:
         gastoForm = GastoForm(obj=gasto)
-    return render_template("form.html", form=gastoForm)
+    return render_template("edit.html", form=gastoForm)
 
 @views.route("/")
 @views.route("/monthly/")

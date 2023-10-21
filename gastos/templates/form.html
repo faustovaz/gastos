@@ -1,10 +1,4 @@
-{% extends "base.html" %}
-{% block title %}Gastos de casa{% endblock %}
-{% block fnname %}
-<a class="breadcrumb" href="#">Adicionar</a>
-{% endblock %}
-
-{% block content %}
+{% macro gasto_form(form) %}
     {% if form.errors %}
         <div class="card-panel white-text red darken1">
             Erro ao salvar gasto.
@@ -73,4 +67,4 @@
         </ul>
     </form>
     <script src="{{ url_for('static', filename='js/form.js') }}"></script>
-{% endblock %}
+{% endmacro %}
