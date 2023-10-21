@@ -2,8 +2,8 @@
 
 {% block title %}Gastos de casa{% endblock %}
 {% block fnname %}
-<a class="breadcrumb" href="#">Agosto</a>
-<a class="breadcrumb" href="#">2023</a>
+<a class="breadcrumb" href="{{ gastoMensalView.link_to_month() }}">{{ gastoMensalView.month_desc }}</a>
+<a class="breadcrumb" href="{{ gastoMensalView.link_to_year() }}">{{ gastoMensalView.year }}</a>
 {% endblock %}
 {% block content %}
 
