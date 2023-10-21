@@ -1,4 +1,6 @@
+import functools
 from datetime import date
+
 
 class GastosMensaisView:
     def __init__(self, year, values):
@@ -10,8 +12,24 @@ class GastosMensaisView:
                 {   "month_name": month, 
                     "key": month_number, 
                     "total": values.get(month_number, 0),
-                    "link": f"{month_number}_{year}"
+                    "link": f"{month_number}/{year}"
                  })
+
+class GastoMensalView:
+    def __init__(self, month, year, values, recorrentes):
+        self.year = year
+        self.month = month
+        self.values = values
+        self.recorrentes = recorrentes
+
+    def all(self):
+        return (self.values + self.recorrentes)
+
+    def total(self):
+        gastos = map(lambda g: g.quanto, self.all())
+        return functools.reduce(lambda x,y: x + y, gastos, 0)
+        
+
 
 def months():
     return {

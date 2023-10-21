@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Gastos de casa{% endblock %}
+{% block fnname %}
+<a class="breadcrumb" href="#">Agosto</a>
+<a class="breadcrumb" href="#">2023</a>
+{% endblock %}
+{% block content %}
+
+    <table class="striped highlight">
+        <thead>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th></th>
+        </thead>
+        <tbody>
+    {% if gastoMensalView.all()|length <= 0 %}
+            <tr><td colspan="4"></td></tr>
+    {% else %}
+        {% for gasto in gastoMensalView.all() %}
+            <tr>
+                <td>{{ gasto.descricao }}</td>
+                <td>R$ {{ "%.2f"|format(gasto.quanto) }}</td>
+                <td>{{ gasto.quando.strftime("%d/%m/%Y") }}</td>
+                <td>
+                    <a href="#">
+                        <i class="material-icons">search</i>
+                    </a>
+                </td>
+            </tr>
+    {% endfor %}
+
+    {% endif %}
+            <tr>
+                <td colspan="4" class="right-align">
+                    Total: R$ {{ "%.2f"|format(gastoMensalView.total()) }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
