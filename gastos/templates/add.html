@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% from 'form.html' import gasto_form %}
 {% block title %}Gastos de casa{% endblock %}
-{% block fnname %}
+''{% block fnname %}
 <a class="breadcrumb" href="#">Adicionar</a>
 {% endblock %}
 
 {% block content %}
-    {{ gasto_form(form) }}
+    {{ gasto_form(form, "/add", "post") }}
 {% endblock %}

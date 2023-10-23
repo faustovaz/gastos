@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from functools import reduce
 from datetime import date
 from .forms import GastoForm 
@@ -8,23 +8,27 @@ from .helpers import GastosMensaisView, GastoMensalView
 views = Blueprint('views', __name__)
 
 @views.route("/add", methods=['GET', 'POST'])
-def add_new():
+def save():
     gastoForm = GastoForm()
     if gastoForm.validate_on_submit():
-        gastoService = GastoService(gastoForm)
-        gastoService.save()
+        gastoService = GastoService()
+        gastoService.save_form(gastoForm)
         flash('Gasto adicionado com sucesso!', category='success')
-        return redirect(url_for('views.add_new'))
+        return redirect(url_for('views.save'))
     return render_template("add.html", form=gastoForm)
 
-@views.route("/edit/<id>", methods=['GET'])
+@views.route("/edit/<int:id>", methods=['GET', 'POST'])
 def edit(id):
     gastoService = GastoService()
     gasto = gastoService.find_by_id(id)
     gastoForm = GastoForm()
     if gasto:
-        gastoForm = GastoForm(obj=gasto)
-    return render_template("edit.html", form=gastoForm)
+        if request.method == 'GET':
+            gastoForm = GastoForm(obj=gasto)
+        if gastoForm.validate_on_submit():
+            gastoService.update(gastoForm, id)
+            flash("Gasto atualizado com sucesso!", category="success")           
+    return render_template("edit.html", action=f"/edit/{id}", form=gastoForm)
 
 @views.route("/")
 @views.route("/monthly/")

@@ -23,5 +23,14 @@ class GastoRecorrente(database.Model):
 
     def __repr__(self):
         return f'<Gasto Recorrente id={self.id}, quando={self.quando}, quanto={self.quanto}>'
+        
+    @classmethod
+    def of(cls, gasto):
+        gastoRecorrente = GastoRecorrente()
+        gastoRecorrente.quando = gasto.quando
+        gastoRecorrente.quanto = gasto.quanto
+        gastoRecorrente.descricao = gasto.descricao
+        gastoRecorrente.tags = gasto.tags
+        return gastoRecorrente
 
 

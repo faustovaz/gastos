@@ -1,10 +1,10 @@
-{% macro gasto_form(form) %}
+{% macro gasto_form(form, action, method) %}
     {% if form.errors %}
         <div class="card-panel white-text red darken1">
             Erro ao salvar gasto.
         </div>
     {% endif %}
-    <form action="#" method="post">
+    <form action="{{ action }}" method="{{ method }}">
         {{ form.csrf_token }}
         <ul>
             <li>

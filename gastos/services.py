@@ -9,23 +9,41 @@ from .helpers import shouldInclude
 
 class GastoService():
 
-    def __init__(self, gastoForm=None):
-        self.gastoForm = gastoForm
-
-    def isParcelado(self):
-        return self.gastoForm.parcelado.data
-
-    def isRecorrente(self):
-        return self.gastoForm.recorrente.data
-
-    def save(self):
-        if self.isParcelado():
-            self._saveGastoParcelado()
-        elif self.isRecorrente():
-            self._saveGastoRecorrente()
+    def save_form(self, gastoForm):
+        gasto = GastoMensal()
+        gastoForm.populate_obj(gasto)
+        self.save(gasto)
+    
+    def update(self, gastoForm, id):
+        gasto = self.find_by_id(id)
+        gastoForm.populate_obj(gasto)
+        self.save(gasto)
+                
+    def save(self, gasto):
+        if (gasto.parcelado):
+            self._saveGastoParcelado(gasto)
+        elif (gasto.recorrente):
+            self._saveGastoRecorrente(gasto)
         else:
-            self._saveGastoMensal()
+            self._saveGastoMensal(gasto)
 
+    def _saveGastoMensal(self, gasto):
+        database.session.add(gasto)
+        database.session.commit()
+
+    def _saveGastoParcelado(self, gasto):
+        parcelas = int(gasto.parcelas)
+        for parcela in range(1, parcelas + 1):
+            gasto.parcela_repr = f'({parcela}/{parcelas})'
+            gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
+            database.session.add(gasto)
+        database.session.commit()
+
+    def _saveGastoRecorrente(self, gasto):
+        gastoRecorrente = GastoRecorrente.of(gasto)
+        database.session.add(gastoRecorrente)
+        database.session.commit()
+    
     def list_by_year(self, year):
         all_mensais = self.all_mensais_by_year(year)
         recorrentes = self.all_recorrentes()
@@ -67,26 +85,3 @@ class GastoService():
         return database \
                 .session \
                 .get(GastoMensal, id)
-
-    def _saveGastoMensal(self):
-        gasto = GastoMensal()
-        self.gastoForm.populate_obj(gasto)
-        database.session.add(gasto)
-        database.session.commit()
-
-    def _saveGastoParcelado(self):
-        parcelas = int(self.gastoForm.parcelas.data)
-        for parcela in range(1, parcelas + 1):
-            gasto = GastoMensal()
-            self.gastoForm.populate_obj(gasto)
-            gasto.parcela_repr = f'({parcela}/{parcelas})'
-            gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
-            database.session.add(gasto)
-        database.session.commit()
-
-    def _saveGastoRecorrente(self):
-        gasto = GastoRecorrente()
-        self.gastoForm.populate_obj(gasto)
-        database.session.add(gasto)
-        database.session.commit()
-
