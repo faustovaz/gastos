@@ -34,7 +34,7 @@ def edit(id):
 @views.route("/monthly/")
 @views.route("/monthly/<int:year>")
 def monthly(year=None):
-    year = int(year) if year and year.isnumeric() else date.today().year
+    year = year if year else date.today().year
     gastoService = GastoService()
     all = gastoService.list_by_year(year)
     return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(year, all))
