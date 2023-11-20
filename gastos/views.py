@@ -32,18 +32,18 @@ def edit(id):
 
 @views.route("/")
 @views.route("/monthly/")
-@views.route("/monthly/<year>")
+@views.route("/monthly/<int:year>")
 def monthly(year=None):
     year = int(year) if year and year.isnumeric() else date.today().year
     gastoService = GastoService()
     all = gastoService.list_by_year(year)
     return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(year, all))
 
-@views.route("/monthly/<month>/<year>")
+@views.route("/monthly/<int:month>/<int:year>")
 def view_monthly(month, year):
     gastoService = GastoService()
     gastos = gastoService.all_by_month_and_year(month, year)
-    recorrentes = gastoService.all_recorrentes()
+    recorrentes = gastoService.all_recorrentes_starting_from(month, year)
     
     return render_template("view_gasto_mensal.html", \
                             gastoMensalView=GastoMensalView(month, year, gastos, recorrentes))

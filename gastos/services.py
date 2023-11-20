@@ -72,6 +72,9 @@ class GastoService():
                 .query(GastoRecorrente) \
                 .all()
 
+    def all_recorrentes_starting_from(self, month, year):
+        return list(filter(lambda g: shouldInclude(g.quando, date(year, month, 1)), self.all_recorrentes()))
+
     def all_by_month_and_year(self, month, year):
         return database \
                 .session \
@@ -85,3 +88,4 @@ class GastoService():
         return database \
                 .session \
                 .get(GastoMensal, id)
+
