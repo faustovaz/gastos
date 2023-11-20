@@ -20,15 +20,16 @@ def save():
 @views.route("/edit/<int:id>", methods=['GET', 'POST'])
 def edit(id):
     gastoService = GastoService()
-    gasto = gastoService.find_by_id(id)
     gastoForm = GastoForm()
+    args = request.args
+    gasto = gastoService.find_recurrent(id) if ("recurrent" in args) else gastoService.find(id)
     if gasto:
         if request.method == 'GET':
             gastoForm = GastoForm(obj=gasto)
         if gastoForm.validate_on_submit():
             gastoService.update(gastoForm, id)
             flash("Gasto atualizado com sucesso!", category="success")           
-    return render_template("edit.html", action=f"/edit/{id}", form=gastoForm)
+    return render_template("edit.html", action=f"{gasto.to_edit()}", form=gastoForm)
 
 @views.route("/")
 @views.route("/monthly/")

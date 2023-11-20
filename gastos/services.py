@@ -15,7 +15,7 @@ class GastoService():
         self.save(gasto)
     
     def update(self, gastoForm, id):
-        gasto = self.find_by_id(id)
+        gasto = self.find(id)
         gastoForm.populate_obj(gasto)
         self.save(gasto)
                 
@@ -85,8 +85,13 @@ class GastoService():
                 .order_by(asc(GastoMensal.quanto)) \
                 .all()
 
-    def find_by_id(self, id):
+    def find(self, id):
         return database \
                 .session \
                 .get(GastoMensal, id)
+
+    def find_recurrent(self, id):
+        return database \
+                .session \
+                .get(GastoRecorrente, id)
 
