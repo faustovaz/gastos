@@ -31,23 +31,22 @@ class GastosMensaisView:
         self.grid = []
         for month_number, month in months().items():
             self.grid.append(
-                {   "month_name": month, 
-                    "key": month_number, 
+                {   "month_name": month,
+                    "key": month_number,
                     "total": values.get(month_number, 0),
                     "link": f"{month_number}/{year}"
                  })
 
 
 class GastoMensalView:
-    def __init__(self, month, year, values, recorrentes):
+    def __init__(self, month, year, values):
         self.month = month
         self.year = year
         self.values = values
-        self.recorrentes = recorrentes
         self.month_desc = months().get(int(month))
 
     def all(self):
-        return (self.values + self.recorrentes)
+        return self.values
 
     def total(self):
         gastos = map(lambda g: g.quanto, self.all())

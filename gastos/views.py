@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from functools import reduce
 from datetime import date
-from .forms import GastoForm 
+from .forms import GastoForm
 from .services import GastoService
 from .helpers import GastosMensaisView, GastoMensalView
 
@@ -22,13 +22,13 @@ def edit(id):
     gastoService = GastoService()
     gastoForm = GastoForm()
     args = request.args
-    gasto = gastoService.find_recurrent(id) if ("recurrent" in args) else gastoService.find(id)
+    gasto = gastoService.find(id)
     if gasto:
         if request.method == 'GET':
             gastoForm = GastoForm(obj=gasto)
         if gastoForm.validate_on_submit():
             gastoService.update(gastoForm, id)
-            flash("Gasto atualizado com sucesso!", category="success")           
+            flash("Gasto atualizado com sucesso!", category="success")
     return render_template("edit.html", action=f"{gasto.to_edit()}", form=gastoForm)
 
 @views.route("/")
@@ -44,11 +44,7 @@ def monthly(year=None):
 def view_monthly(month, year):
     gastoService = GastoService()
     gastos = gastoService.all_by_month_and_year(month, year)
-    recorrentes = gastoService.all_recorrentes_starting_from(month, year)
-    
-    return render_template("view_gasto_mensal.html", \
-                            gastoMensalView=GastoMensalView(month, year, gastos, recorrentes))
-
+    return render_template("view_gasto_mensal.html", gastoMensalView=GastoMensalView(month, year, gastos))
 
 @views.route("/recurrent")
 def recurrent():
@@ -60,6 +56,4 @@ def recurrent():
 @views.route("/account")
 def account():
     return render_template("minha_conta.html")
-
-
 
