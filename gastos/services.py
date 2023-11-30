@@ -24,8 +24,7 @@ class GastoService():
             parcelas = int(gasto.parcelas)
             for parcela in range(1, parcelas + 1):
                 gasto.parcela_repr = f'({parcela}/{parcelas})'
-                gasto.quando = gasto.quando \
-                                + relativedelta(months = parcela - 1)
+                gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
                 database.session.add(gasto)
                 database.session.commit()
         else:
