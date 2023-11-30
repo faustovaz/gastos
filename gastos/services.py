@@ -9,27 +9,26 @@ from .helpers import shouldInclude
 
 class GastoService():
 
-    def save_form(self, gastoForm):
+    def save(self, gasto_form):
         gasto = Gasto()
-        gastoForm.populate_obj(gasto)
-        self.save(gasto)
+        gasto_form.populate_obj(gasto)
+        if gasto.parcelado:
+            parcelas = int(gasto.parcelas)
+            for parcela in range(1, parcelas + 1):
+                gasto.parcela_repr = f'({parcela}/{parcelas})'
+                gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
+                print(f'({parcela}/{parcelas}')
+                print(gasto)
+                database.session.add(gasto)
+            database.session.commit()
+        else:
+            database.session.add(gasto)
+            database.session.commit()
 
     def update(self, gastoForm, id):
         gasto = self.find(id)
         gastoForm.populate_obj(gasto)
         self.save(gasto)
-
-    def save(self, gasto):
-        if (gasto.parcelado):
-            parcelas = int(gasto.parcelas)
-            for parcela in range(1, parcelas + 1):
-                gasto.parcela_repr = f'({parcela}/{parcelas})'
-                gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
-                database.session.add(gasto)
-                database.session.commit()
-        else:
-            database.session.add(gasto)
-            database.session.commit()
 
     def list_totals_by_year(self, year):
         all_months = {}

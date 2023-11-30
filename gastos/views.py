@@ -12,7 +12,7 @@ def save():
     gastoForm = GastoForm()
     if gastoForm.validate_on_submit():
         gastoService = GastoService()
-        gastoService.save_form(gastoForm)
+        gastoService.save(gastoForm)
         flash('Gasto adicionado com sucesso!', category='success')
         return redirect(url_for('views.save'))
     return render_template("add.html", form=gastoForm)
