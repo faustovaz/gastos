@@ -24,52 +24,64 @@ class GastoService():
             parcelas = int(gasto.parcelas)
             for parcela in range(1, parcelas + 1):
                 gasto.parcela_repr = f'({parcela}/{parcelas})'
-                gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
+                gasto.quando = gasto.quando \
+                                + relativedelta(months = parcela - 1)
                 database.session.add(gasto)
-            database.session.commit()
+                database.session.commit()
         else:
             database.session.add(gasto)
             database.session.commit()
 
-    def list_by_year(self, year):
-        all_mensais = self.all_by_year(year)
-        recorrentes = self.all_recorrentes()
+    def list_totals_by_year(self, year):
         all_months = {}
+        all_mensais = self.group_by_month(self.all_non_recurrent_by_year(year))
+        all_recorrentes = self.all_recorrentes()
         for month in range(1, 13):
-            totals = list(map(lambda gasto: gasto.quanto, all_mensais.get(month, [])))
-            recorrentes = self.all_recorrentes_starting_from(month, year)
-            totals = totals + list(map(lambda gasto: gasto.quanto, recorrentes))
-            total = functools.reduce(lambda x,y: x+y, totals, 0)
+            recorrentes = self.recorrentes_filtered_by(month, year, all_recorrentes)
+            totais_mensal = list(map(lambda gasto: gasto.quanto, all_mensais.get(month, [])))
+            totais_recorrentes = list(map(lambda gasto: gasto.quanto, recorrentes))
+            totais = totais_mensal + totais_recorrentes
+            total = functools.reduce(lambda x,y: x+y , totais, 0)
             all_months.update({month: total})
         all_months.update({year: year})
         return all_months
 
-    def all_by_year(self, year):
-        gastos = database \
-                    .session \
-                    .query(Gasto) \
-                    .filter(extract('year', Gasto.quando) == year) \
-                    .all()
+    def group_by_month(self, gastos):
         return {month: list(g) for month, g in groupby(gastos, lambda gasto: gasto.quando.month)}
 
-    def all_recorrentes(self):
-        return database.session.query(Gasto).filter(Gasto.recorrente == True).all()
+    def all_non_recurrent_by_year(self, year):
+        return database \
+                .session \
+                .query(Gasto) \
+                .filter(extract('year', Gasto.quando) == year) \
+                .filter(Gasto.recorrente == False) \
+                .all()
 
-    def all_recorrentes_starting_from(self, month, year):
-        return list(filter(lambda g: shouldInclude(g.quando, date(year, month, 1)), \
-                           self.all_recorrentes()))
-
-    def all_by_month_and_year(self, month, year):
+    def all_non_recurrent_by_month_and_year(self, month, year):
         return database \
                 .session \
                 .query(Gasto) \
                 .filter(extract('month', Gasto.quando) == month) \
                 .filter(extract('year', Gasto.quando) == year) \
+                .filter(Gasto.recorrente == False) \
                 .order_by(asc(Gasto.quanto)) \
                 .all()
 
-    def find(self, id):
+    def all_recorrentes(self):
         return database \
                 .session \
-                .get(Gasto, id)
+                .query(Gasto) \
+                .filter(Gasto.recorrente == True) \
+                .all()
+
+    def recorrentes_filtered_by(self, month, year, recorrentes):
+        return list(filter(lambda g: shouldInclude(g.quando, date(year, month, 1)), recorrentes))
+
+    def all_by_month_and_year(self, month, year):
+        all_monthly = self.all_non_recurrent_by_month_and_year(month, year)
+        recurrents = self.recorrentes_filtered_by(month, year, self.all_recorrentes())
+        return all_monthly + recurrents
+
+    def find(self, id):
+        return database.session.get(Gasto, id)
 

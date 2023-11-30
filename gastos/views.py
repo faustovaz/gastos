@@ -37,7 +37,7 @@ def edit(id):
 def monthly(year=None):
     year = year if year else date.today().year
     gastoService = GastoService()
-    all = gastoService.list_by_year(year)
+    all = gastoService.list_totals_by_year(year)
     return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(year, all))
 
 @views.route("/monthly/<int:month>/<int:year>")
