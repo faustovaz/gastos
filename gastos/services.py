@@ -57,7 +57,7 @@ class GastoService():
                 .filter(Gasto.recorrente == False) \
                 .all()
 
-    def all_non_recurrent_by_month_and_year(self, month, year):
+    def all_non_recurrent_by_month(self, month, year):
         return database \
                 .session \
                 .query(Gasto) \
@@ -78,7 +78,7 @@ class GastoService():
         return list(filter(lambda g: shouldInclude(g.quando, date(year, month, 1)), recorrentes))
 
     def all_by_month_and_year(self, month, year):
-        all_monthly = self.all_non_recurrent_by_month_and_year(month, year)
+        all_monthly = self.all_non_recurrent_by_month(month, year)
         recurrents = self.recorrentes_filtered_by(month, year, self.all_recorrentes())
         return all_monthly + recurrents
 
