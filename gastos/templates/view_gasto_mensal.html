@@ -20,7 +20,7 @@
     {% else %}
         {% for gasto in gastoMensalView.all() %}
             <tr>
-                <td>{{ gasto.descricao }}</td>
+                <td>{{ gasto.descricao_formatted() }}</td>
                 <td>R$ {{ "%.2f"|format(gasto.quanto) }}</td>
                 <td>{{ gasto.quando.strftime("%d/%m/%Y") }}</td>
                 <td>

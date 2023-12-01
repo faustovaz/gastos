@@ -16,6 +16,12 @@ class Gasto(database.Model):
     def to_edit(self):
         return f'/edit/{self.id}'
 
+    def descricao_formatted(self):
+        if self.parcelado:
+            return f'{self.descricao} {self.parcela_repr}'
+        else:
+            return self.descricao
+
     def __repr__(self):
         return f'<Gasto id={self.id}, quando={self.quando}, quanto={self.quanto}>'
 
