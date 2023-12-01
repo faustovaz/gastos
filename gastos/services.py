@@ -1,6 +1,7 @@
+import functools
+import copy
 from dateutil.relativedelta import relativedelta
 from datetime import date
-import functools
 from itertools import groupby
 from sqlalchemy.sql import extract, asc
 from . import database
@@ -14,11 +15,11 @@ class GastoService():
         gasto_form.populate_obj(gasto)
         if gasto.parcelado:
             parcelas = int(gasto.parcelas)
+            quando = gasto.quando
             for parcela in range(1, parcelas + 1):
+                gasto = copy.deepcopy(gasto)
                 gasto.parcela_repr = f'({parcela}/{parcelas})'
-                gasto.quando = gasto.quando + relativedelta(months = parcela - 1)
-                print(f'({parcela}/{parcelas}')
-                print(gasto)
+                gasto.quando = quando + relativedelta(months = parcela - 1)
                 database.session.add(gasto)
             database.session.commit()
         else:
