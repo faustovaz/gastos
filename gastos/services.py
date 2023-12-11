@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 from itertools import groupby
 from sqlalchemy.sql import extract, asc
+from sqlalchemy.orm.session import make_transient
 from . import database
 from .models import Gasto
 from .helpers import shouldInclude
@@ -33,14 +34,14 @@ class GastoService():
 
     def list_totals_by_year(self, year):
         all_months = {}
-        all_mensais = self.group_by_month(self.all_non_recurrent_by_year(year))
+        all_by_year = self.group_by_month(self.all_non_recurrent_by_year(year))
         all_recorrentes = self.all_recorrentes()
         for month in range(1, 13):
             recorrentes = self.recorrentes_filtered_by(month, year, all_recorrentes)
-            totais_mensal = list(map(lambda gasto: gasto.quanto, all_mensais.get(month, [])))
-            totais_recorrentes = list(map(lambda gasto: gasto.quanto, recorrentes))
-            totais = totais_mensal + totais_recorrentes
-            total = functools.reduce(lambda x,y: x+y , totais, 0)
+            all_monthly = all_by_year.get(month, [])
+            all_monthly = self.remove_duplicates(all_monthly, recorrentes)
+            totals = list(map(lambda gasto: gasto.quanto, all_monthly))
+            total = functools.reduce(lambda x,y: x+y , totals, 0)
             all_months.update({month: total})
         all_months.update({year: year})
         return all_months
@@ -79,8 +80,30 @@ class GastoService():
     def all_by_month_and_year(self, month, year):
         all_monthly = self.all_non_recurrent_by_month(month, year)
         recurrents = self.recorrentes_filtered_by(month, year, self.all_recorrentes())
-        return all_monthly + recurrents
+        return self.remove_duplicates(all_monthly, recurrents)
+
+    def remove_duplicates(self, all_monthly, recorrentes):
+        recorrentes_ids = list(map(lambda g: g.gasto_recorrente_id, all_monthly))
+        for recorrente in recorrentes:
+            if (recorrente.id not in recorrentes_ids):
+                all_monthly.append(recorrente)
+        return all_monthly
 
     def find(self, id):
         return database.session.get(Gasto, id)
+
+    def add_to_month(self, id, month):
+        gasto = self.find(id)
+        if gasto:
+            make_transient(gasto)
+            gasto.gasto_recorrente_id = gasto.id
+            gasto.id = None
+            gasto.recorrente = False
+            gasto.parcelas = 0
+            gasto.quando = gasto.quando.replace(month=month)
+            database.session.add(gasto)
+            database.session.commit()
+            return gasto
+        return None
+
 

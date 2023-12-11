@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+import json
+from flask import Blueprint, render_template, flash, redirect, url_for, request, jsonify
 from functools import reduce
 from datetime import date
 from .forms import GastoForm
@@ -52,6 +53,14 @@ def recurrent():
     recorrentes = gastoService.all_recorrentes()
     total = reduce(lambda acc, gasto: acc + gasto.quanto, recorrentes, 0)
     return render_template("gastos_recorrentes.html", gastos=recorrentes, total=total)
+
+@views.route("/add_to_month", methods = ['POST'])
+def add_to_month():
+    service = GastoService()
+    data = json.loads(request.data)
+    gasto = service.add_to_month(data['gasto_id'], data['month'])
+    if gasto:
+        return jsonify({})
 
 @views.route("/account")
 def account():

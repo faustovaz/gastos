@@ -27,6 +27,14 @@
                     <a href="{{ gasto.to_edit() }}">
                         <i class="material-icons">search</i>
                     </a>
+                    {% if gasto.recorrente %}
+                        <a href="#" title="Fixar gasto no mês" 
+                                onclick="post_to('/add_to_month', 
+                                        {gasto_id: {{ gasto.id }}, month: {{ gastoMensalView.month }}},
+                                        '{{ gastoMensalView.link_to_month() }}')">
+                            <i class="material-icons">playlist_add</i>                                       
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
     {% endfor %}
