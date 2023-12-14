@@ -1,3 +1,5 @@
+from flask_login import UserMixin
+from sqlalchemy import UniqueConstraint
 from . import database
 
 class Gasto(database.Model):
@@ -11,7 +13,12 @@ class Gasto(database.Model):
     recorrente = database.Column(database.Boolean)
     tags = database.Column(database.String)
     gasto_recorrente_id = database.Column(database.Integer, \
-                                          database.ForeignKey('gasto.id'))
+                                          database.ForeignKey('gasto.id', \
+                                            name = 'fk_gasto_recorrente_id'))
+    usuario_id = database.Column(database.Integer, \
+                                    database.ForeignKey('user.id', \
+                                            name = 'fk_user_id'))
+    usuario = database.Relationship('User')
 
     def to_edit(self):
         return f'/edit/{self.id}'
@@ -25,3 +32,9 @@ class Gasto(database.Model):
     def __repr__(self):
         return f'<Gasto id={self.id}, quando={self.quando}, quanto={self.quanto}>'
 
+
+class User(database.Model, UserMixin):
+    id = database.Column(database.Integer, primary_key=True)
+    login = database.Column(database.String)
+    password = database.Column(database.String(150))
+    UniqueConstraint('login', name='uq_login')
