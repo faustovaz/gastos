@@ -1,5 +1,6 @@
 import json
 from flask import Blueprint, render_template, flash, redirect, url_for, request, jsonify
+from flask_login import login_required
 from functools import reduce
 from datetime import date
 from .forms import GastoForm
@@ -9,6 +10,7 @@ from .helpers import GastosMensaisView, GastoMensalView
 views = Blueprint('views', __name__)
 
 @views.route("/add", methods=['GET', 'POST'])
+@login_required
 def save():
     gastoForm = GastoForm()
     if gastoForm.validate_on_submit():
@@ -19,6 +21,7 @@ def save():
     return render_template("add.html", form=gastoForm)
 
 @views.route("/edit/<int:id>", methods=['GET', 'POST'])
+@login_required
 def edit(id):
     gastoService = GastoService()
     gastoForm = GastoForm()
@@ -35,6 +38,7 @@ def edit(id):
 @views.route("/")
 @views.route("/monthly/")
 @views.route("/monthly/<int:year>")
+@login_required
 def monthly(year=None):
     year = year if year else date.today().year
     gastoService = GastoService()
@@ -42,12 +46,14 @@ def monthly(year=None):
     return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(year, all))
 
 @views.route("/monthly/<int:month>/<int:year>")
+@login_required
 def view_monthly(month, year):
     gastoService = GastoService()
     gastos = gastoService.all_by_month_and_year(month, year)
     return render_template("view_gasto_mensal.html", gastoMensalView=GastoMensalView(month, year, gastos))
 
 @views.route("/recurrent")
+@login_required
 def recurrent():
     gastoService = GastoService()
     recorrentes = gastoService.all_recorrentes()
@@ -55,6 +61,7 @@ def recurrent():
     return render_template("gastos_recorrentes.html", gastos=recorrentes, total=total)
 
 @views.route("/add_to_month", methods = ['POST'])
+@login_required
 def add_to_month():
     service = GastoService()
     data = json.loads(request.data)
@@ -63,6 +70,7 @@ def add_to_month():
         return jsonify({})
 
 @views.route("/account")
+@login_required
 def account():
     return render_template("minha_conta.html")
 
