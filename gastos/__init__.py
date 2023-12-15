@@ -23,12 +23,21 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
+        from .models import User
         return User.query.get(int(id))
 
     from .views import views
     from .auth import auth
+
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
+    @app.cli.command("seed")
+    def seed():
+        from werkzeug.security import generate_password_hash
+        passwd = generate_password_hash('gasto123', method='scrypt')
+        database.session.add(User(login='faustovaz', password=passwd))
+        database.session.add(User(login='cris', password=passwd))
+        database.session.commit()
 
     return app
