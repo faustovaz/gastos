@@ -11,9 +11,13 @@ from .helpers import shouldInclude
 
 class GastoService():
 
+    def __init__(self, current_user):
+        self.current_user = current_user
+
     def save(self, gasto_form):
         gasto = Gasto()
         gasto_form.populate_obj(gasto)
+        gasto.usuario_id = self.current_user.id
         if gasto.parcelado:
             parcelas = int(gasto.parcelas)
             quando = gasto.quando
