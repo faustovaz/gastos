@@ -26,9 +26,11 @@ class Gasto(database.Model):
     def descricao_formatted(self):
         if self.parcelado:
             return f'{self.descricao} {self.parcela_repr}'
-        else:
-            return self.descricao
+        return self.descricao
 
+    def belongs_to(self, current_user):
+        return self.usuario_id == current_user.id
+    
     def __repr__(self):
         return f'<Gasto id={self.id}, quando={self.quando}, quanto={self.quanto}>'
 

@@ -23,9 +23,11 @@
                         <td>R$ {{ "%.2f"|format(gasto.quanto) }}</td>
                         <td>{{ gasto.quando.strftime("%d/%m/%Y") }}</td>
                         <td>
-                            <a href="#">
-                                <i class="material-icons">search</i>
-                            </a>
+                            {% if gasto.belongs_to(current_user) %}
+                                <a href="{{ gasto.to_edit() }}">
+                                    <i class="material-icons">search</i>
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

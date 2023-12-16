@@ -58,7 +58,10 @@ def recurrent():
     gastoService = GastoService(current_user)
     recorrentes = gastoService.all_recorrentes()
     total = reduce(lambda acc, gasto: acc + gasto.quanto, recorrentes, 0)
-    return render_template("gastos_recorrentes.html", gastos=recorrentes, total=total)
+    return render_template("gastos_recorrentes.html", \
+                            gastos=recorrentes, \
+                            total=total, \
+                            current_user=current_user)
 
 @views.route("/add_to_month", methods = ['POST'])
 @login_required

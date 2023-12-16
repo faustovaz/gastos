@@ -33,8 +33,9 @@ class GastoService():
 
     def update(self, gastoForm, id):
         gasto = self.find(id)
-        gastoForm.populate_obj(gasto)
-        self.save(gasto)
+        if gasto.belongs_to(self.current_user):
+            gastoForm.populate_obj(gasto)
+            self.save(gasto)
 
     def list_totals_by_year(self, year):
         all_months = {}
