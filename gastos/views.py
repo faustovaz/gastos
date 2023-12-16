@@ -24,16 +24,20 @@ def save():
 @login_required
 def edit(id):
     gastoService = GastoService(current_user)
-    gastoForm = GastoForm()
+    gasto_form = GastoForm()
     args = request.args
     gasto = gastoService.find(id)
     if gasto:
         if request.method == 'GET':
-            gastoForm = GastoForm(obj=gasto)
-        if gastoForm.validate_on_submit():
-            gastoService.update(gastoForm, id)
+            gasto_form = GastoForm(obj=gasto)
+        if gasto_form.validate_on_submit():
+            gastoService.update(gasto_form, id)
             flash("Gasto atualizado com sucesso!", category="success")
-    return render_template("edit.html", action=f"{gasto.to_edit()}", form=gastoForm)
+    return render_template("edit.html", \
+                            action=f"{gasto.to_edit()}", \
+                            form=gasto_form, \
+                            current_user=current_user, \
+                            disable_save=not gasto.belongs_to(current_user))
 
 @views.route("/")
 @views.route("/monthly/")
@@ -43,14 +47,16 @@ def monthly(year=None):
     year = year if year else date.today().year
     gastoService = GastoService(current_user)
     all = gastoService.list_totals_by_year(year)
-    return render_template("gastos_mensais.html", gastosMensaisView=GastosMensaisView(year, all))
+    return render_template("gastos_mensais.html", \
+                            gastosMensaisView=GastosMensaisView(year, all))
 
 @views.route("/monthly/<int:month>/<int:year>")
 @login_required
 def view_monthly(month, year):
     gastoService = GastoService(current_user)
     gastos = gastoService.all_by_month_and_year(month, year)
-    return render_template("view_gasto_mensal.html", gastoMensalView=GastoMensalView(month, year, gastos))
+    return render_template("view_gasto_mensal.html", \
+                        gastoMensalView=GastoMensalView(month, year, gastos))
 
 @views.route("/recurrent")
 @login_required

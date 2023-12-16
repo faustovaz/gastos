@@ -1,4 +1,4 @@
-{% macro gasto_form(form, action, method) %}
+{% macro gasto_form(form, action, method, disable_save=false) %}
     {% if form.errors %}
         <div class="card-panel white-text red darken1">
             Erro ao salvar gasto.
@@ -59,7 +59,7 @@
             </li>
             <li>
                 <div class="right-align">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                    <button class="btn waves-effect waves-light" type="submit" name="action" {{ 'disabled' if disable_save else '' }}> 
                         Salvar
                     </button>
                 </div>

@@ -31,11 +31,12 @@ class GastoService():
             database.session.add(gasto)
             database.session.commit()
 
-    def update(self, gastoForm, id):
+    def update(self, gasto_form, id):
         gasto = self.find(id)
         if gasto.belongs_to(self.current_user):
-            gastoForm.populate_obj(gasto)
-            self.save(gasto)
+            gasto_form.populate_obj(gasto)
+            database.session.add(gasto)
+            database.session.commit()
 
     def list_totals_by_year(self, year):
         all_months = {}
