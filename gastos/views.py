@@ -3,8 +3,8 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request,
 from flask_login import login_required, current_user
 from functools import reduce
 from datetime import date
-from .forms import GastoForm
-from .services import GastoService
+from .forms import GastoForm, UserForm
+from .services import GastoService, UserService
 from .helpers import GastosMensaisView, GastoMensalView
 
 views = Blueprint('views', __name__)
@@ -78,8 +78,14 @@ def add_to_month():
     if gasto:
         return jsonify({})
 
-@views.route("/account")
+@views.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template("minha_conta.html")
+    user_form = UserForm()
+    if request.method == 'GET':
+        user_form = UserForm(obj=current_user)
+    if user_form.validate_on_submit():
+        user_service = UserService(current_user)
+        user_service.update(user_form)
+    return render_template("minha_conta.html", current_user=current_user, form=user_form)
 

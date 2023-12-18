@@ -5,8 +5,10 @@ from datetime import date
 from itertools import groupby
 from sqlalchemy.sql import extract, asc
 from sqlalchemy.orm.session import make_transient
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from . import database
-from .models import Gasto
+from .models import Gasto, User
 from .helpers import shouldInclude
 
 class GastoService():
@@ -113,3 +115,16 @@ class GastoService():
         return None
 
 
+class UserService():
+    
+    def __init__(self, current_user):
+        self.current_user = current_user
+    
+    def update(self, user_form):
+        user = database.session.get(User, self.current_user.id)
+        current_password = user.password
+        if check_password_hash(current_password, user_form.current_password.data):
+            user_form.populate_obj(user)
+            user.password = generate_password_hash(user.password, method='scrypt')
+            database.session.add(user)
+            database.session.commit()

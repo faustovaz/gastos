@@ -1,6 +1,43 @@
 {% extends "base.html" %}
 {% block title %}Gastos de casa{% endblock %}
-{% block fnname %}Minha conta{% endblock %}
-
+{% block fnname %}
+<a class="breadcrumb" href="#">Minha conta</a>
+{% endblock %}
 {% block content %}
+
+    {% if form.errors %}
+        <div class="card-panel white-text red darken1">
+            Erro ao atualizar configurações.
+        </div>
+    {% endif %}
+    <form action="/account" method="post">
+        {{ form.csrf_token }}
+        <ul>
+            <li>
+                {{ form.login.label }}
+                {{ form.login }}
+            </li>
+            <li>
+                {{ form.current_password.label }}
+                {{ form.current_password }}
+            </li>
+            <li>
+                {{ form.password.label }}
+                {{ form.password }}
+            </li>
+            <li>
+                {{ form.confirm_password.label }}
+                {{ form.confirm_password }}
+            </li>
+            <li>
+                <div class="right-align">
+                    <button class="btn waves-effect waves-light" type="submit" name="action"> 
+                        Salvar
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </form>
+    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+
 {% endblock %}
