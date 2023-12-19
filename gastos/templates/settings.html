@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Gastos de casa{% endblock %}
+{% block fnname %}
+<a class="breadcrumb" href="#">Configurações</a>
+{% endblock %}
+{% block content %}
+    <form action="/settings" method="post">
+        <ul>
+            <li>
+                <div class="right-align">
+                    <button class="btn waves-effect waves-light" type="submit" name="action" {{ 'disabled' if disable_save else '' }}> 
+                        Salvar
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </form>
+    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
+
+{% endblock %}

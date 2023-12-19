@@ -90,3 +90,8 @@ def account():
         flash('Dados atualizados com sucesso!', category='success')
     return render_template("account.html", current_user=current_user, form=user_form)
 
+@views.route("/settings", methods=['GET', 'POST'])
+@login_required
+def settings():
+    return render_template("settings.html")
+
