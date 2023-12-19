@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import DateField, StringField, BooleanField, DecimalField, IntegerField, PasswordField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Length
+from werkzeug.security import check_password_hash
+from .models import User
 
 class GastoForm(FlaskForm):
     quando = DateField('Quando foi?', validators=[DataRequired()])
@@ -20,8 +22,17 @@ class GastoForm(FlaskForm):
 class UserForm(FlaskForm):
     login = StringField('Login', render_kw={'readonly':''})
     current_password = PasswordField('Senha atual', validators=[DataRequired()])
-    password = PasswordField('Nova Senha', \
-                            validators=[DataRequired(), \
-                                EqualTo('confirm_password', 'Senhas precisam ser iguais'), \
-                                Length(min=6, message='Senha precisa ser maior que 6 chars')])
+    password = PasswordField('Nova Senha', validators=[DataRequired()])
     confirm_password = PasswordField('Repetir nova senha')
+
+    def validate_password(form, field):
+        user = User.query.filter_by(login=form.login.data).first()
+        current_passwd = form.current_password.data
+        password = form.password.data
+        confirm_passwd = form.confirm_password.data
+        if not check_password_hash(user.password, current_passwd):
+            raise ValidationError("A senha atual está errada")
+        if len(password) < 6:
+            raise ValidationError("A nova senha deve ter mais que 5 caracteres")
+        if password != confirm_passwd:
+            raise ValidationError("A nova senha e confirmação da nova estão diferentes")

@@ -7,7 +7,11 @@
 
     {% if form.errors %}
         <div class="card-panel white-text red darken1">
-            Erro ao atualizar configurações.
+            {% for field, errors in form.errors.items() %}
+                <ul>
+                    <li>Erro: {{ errors[0] }}</li>
+                </ul>
+            {% endfor %}
         </div>
     {% endif %}
     <form action="/account" method="post">

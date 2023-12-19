@@ -87,5 +87,6 @@ def account():
     if user_form.validate_on_submit():
         user_service = UserService(current_user)
         user_service.update(user_form)
+        flash('Dados atualizados com sucesso!', category='success')
     return render_template("minha_conta.html", current_user=current_user, form=user_form)
 
