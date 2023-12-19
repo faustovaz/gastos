@@ -88,5 +88,5 @@ def account():
         user_service = UserService(current_user)
         user_service.update(user_form)
         flash('Dados atualizados com sucesso!', category='success')
-    return render_template("minha_conta.html", current_user=current_user, form=user_form)
+    return render_template("account.html", current_user=current_user, form=user_form)
 
