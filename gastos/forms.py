@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, StringField, BooleanField, DecimalField, IntegerField, PasswordField
+from wtforms import DateField, StringField, BooleanField, DecimalField, IntegerField, PasswordField, HiddenField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Length
 from werkzeug.security import check_password_hash
 from .models import User
@@ -36,3 +36,7 @@ class UserForm(FlaskForm):
             raise ValidationError("A nova senha deve ter mais que 5 caracteres")
         if password != confirm_passwd:
             raise ValidationError("A nova senha e confirmação da nova estão diferentes")
+
+class SettingsForm(FlaskForm):
+    show_only_my_expenses = BooleanField('Mostrar somente meus gastos?')
+    user_id = HiddenField()

@@ -16,8 +16,7 @@ class Gasto(database.Model):
                                           database.ForeignKey('gasto.id', \
                                             name = 'fk_gasto_recorrente_id'))
     usuario_id = database.Column(database.Integer, \
-                                    database.ForeignKey('user.id', \
-                                            name = 'fk_user_id'))
+                            database.ForeignKey('user.id', name='fk_user_id'))
     usuario = database.Relationship('User')
 
     def to_edit(self):
@@ -39,4 +38,17 @@ class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
     login = database.Column(database.String)
     password = database.Column(database.String(150))
+    settings = database.Relationship('Settings', uselist=False)
     UniqueConstraint('login', name='uq_login')
+
+    def __repr__(self):
+        return f'<User id={self.id}, login={self.login}, settings={self.settings}>'
+
+
+class Settings(database.Model):
+    show_only_my_expenses = database.Column(database.Boolean)
+    user_id = database.Column(database.Integer, \
+                        database.ForeignKey('user.id', name='fk_user_id'), \
+                        primary_key=True)
+    def __repr__(self):
+        return f'<Settings user_id={self.user_id}, show_only_my_expenses={self.show_only_my_expenses}>'

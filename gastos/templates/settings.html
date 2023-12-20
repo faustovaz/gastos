@@ -5,16 +5,27 @@
 {% endblock %}
 {% block content %}
     <form action="/settings" method="post">
+        {{ form.user_id }}
         <ul>
             <li>
+                {{ form.show_only_my_expenses.label }}
+                <div class="switch">
+                    <label>
+                        Não
+                        {{ form.show_only_my_expenses }}
+                        <span class="lever"></span>
+                        Sim
+                    </label>
+                </div>
+            </li>
+            <li>
                 <div class="right-align">
-                    <button class="btn waves-effect waves-light" type="submit" name="action" {{ 'disabled' if disable_save else '' }}> 
+                    <button class="btn waves-effect waves-light" type="submit" name="action"> 
                         Salvar
                     </button>
                 </div>
             </li>
         </ul>
     </form>
-    <script src="{{ url_for('static', filename='js/form.js') }}"></script>
 
 {% endblock %}

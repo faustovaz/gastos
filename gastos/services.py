@@ -7,7 +7,7 @@ from sqlalchemy.sql import extract, asc
 from sqlalchemy.orm.session import make_transient
 from werkzeug.security import generate_password_hash
 from . import database
-from .models import Gasto, User
+from .models import Gasto, User, Settings
 from .helpers import shouldInclude
 
 class GastoService():
@@ -124,4 +124,15 @@ class UserService():
         user_form.populate_obj(user)
         user.password = generate_password_hash(user.password, method='scrypt')
         database.session.add(user)
+        database.session.commit()
+
+
+class SettingsService():
+    def __init__(self, current_user):
+        self.current_user = current_user
+
+    def update(self, settings_form):
+        settings = Settings.query.filter_by(user_id=self.current_user.id).first()
+        settings_form.populate_obj(settings)
+        database.session.add(settings)
         database.session.commit()

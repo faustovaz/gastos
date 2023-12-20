@@ -35,10 +35,13 @@ def create_app():
     @app.cli.command("seed")
     def seed():
         from werkzeug.security import generate_password_hash
-        from .models import User
+        from .models import User, Settings
         passwd = generate_password_hash('gasto123', method='scrypt')
         database.session.add(User(login='faustovaz', password=passwd))
         database.session.add(User(login='cris', password=passwd))
+        database.session.add(Settings(show_only_my_expenses=True, user_id=1))
+        database.session.add(Settings(show_only_my_expenses=True, user_id=2))
         database.session.commit()
+        
 
     return app

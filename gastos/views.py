@@ -3,8 +3,8 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request,
 from flask_login import login_required, current_user
 from functools import reduce
 from datetime import date
-from .forms import GastoForm, UserForm
-from .services import GastoService, UserService
+from .forms import GastoForm, UserForm, SettingsForm
+from .services import GastoService, UserService, SettingsService
 from .helpers import GastosMensaisView, GastoMensalView
 
 views = Blueprint('views', __name__)
@@ -93,5 +93,12 @@ def account():
 @views.route("/settings", methods=['GET', 'POST'])
 @login_required
 def settings():
-    return render_template("settings.html")
+    settings_form = SettingsForm()
+    if request.method == 'GET':
+        settings_form = SettingsForm(obj=current_user.settings)
+    if request.method == 'POST':
+        settings_service = SettingsService(current_user)
+        settings_service.update(settings_form)
+        flash('Configurações atualizadas com sucesso!', category='success')
+    return render_template("settings.html", form=settings_form)
 
