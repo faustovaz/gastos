@@ -35,7 +35,8 @@ class GastosMensaisView:
                     "key": month_number,
                     "total": values.get(month_number, 0),
                     "link": f"{month_number}/{year}"
-                 })
+                 }
+            )
 
 
 class GastoMensalView:
