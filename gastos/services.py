@@ -57,28 +57,31 @@ class GastoService():
         return {month: list(g) for month, g in groupby(gastos, lambda gasto: gasto.quando.month)}
 
     def all_non_recurrent_by_year(self, year):
+        filters = self.__filters(extract('year', Gasto.quando) == year, \
+                                    Gasto.recorrente == False)
         return database \
                 .session \
                 .query(Gasto) \
-                .filter(extract('year', Gasto.quando) == year) \
-                .filter(Gasto.recorrente == False) \
+                .filter(*filters) \
                 .all()
 
     def all_non_recurrent_by_month(self, month, year):
+        filters = self.__filters(extract('month', Gasto.quando) == month, \
+                                    extract('year', Gasto.quando) == year, \
+                                    Gasto.recorrente == False)
         return database \
                 .session \
                 .query(Gasto) \
-                .filter(extract('month', Gasto.quando) == month) \
-                .filter(extract('year', Gasto.quando) == year) \
-                .filter(Gasto.recorrente == False) \
+                .filter(*filters) \
                 .order_by(asc(Gasto.quanto)) \
                 .all()
 
     def all_recorrentes(self):
+        filters = self.__filters(Gasto.recorrente == True)
         return database \
                 .session \
                 .query(Gasto) \
-                .filter(Gasto.recorrente == True) \
+                .filter(*filters) \
                 .all()
 
     def recorrentes_filtered_by(self, month, year, recorrentes):
@@ -112,6 +115,12 @@ class GastoService():
             database.session.commit()
             return gasto
         return None
+
+    def __filters(self, *filters):
+        filter_to_apply = list(filters)
+        if (self.current_user.settings.show_only_my_expenses):
+            filter_to_apply.append(Gasto.usuario_id == self.current_user.id)
+        return filter_to_apply
 
 
 class UserService():
