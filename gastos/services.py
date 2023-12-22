@@ -137,6 +137,7 @@ class UserService():
 
 
 class SettingsService():
+    
     def __init__(self, current_user):
         self.current_user = current_user
 
