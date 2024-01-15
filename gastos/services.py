@@ -118,7 +118,7 @@ class GastoService():
 
     def delete(self, id):
         gasto = self.find(id)
-        if gasto and gasto.usuario_id == self.current_user.id:
+        if gasto and gasto.belongs_to(self.current_user.id):
             database.session.delete(gasto)
             database.session.commit()
 
