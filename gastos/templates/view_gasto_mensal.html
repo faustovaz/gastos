@@ -35,6 +35,13 @@
                             <i class="material-icons">playlist_add</i>                                       
                         </a>
                     {% endif %}
+                    {% if not gasto.recorrente and gasto.belongs_to(current_user) %}
+                        <a href="#" title="Remover gasto" 
+                                onclick="delete_to('/delete/{{ gasto.id }}', 
+                                         '{{ gastoMensalView.link_to_month() }}')">
+                            <i class="material-icons">delete_forever</i>                                       
+                        </a>
+                    {% endif %}                    
                 </td>
             </tr>
     {% endfor %}

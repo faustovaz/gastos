@@ -39,6 +39,13 @@ def edit(id):
                             current_user=current_user, \
                             disable_save=not gasto.belongs_to(current_user))
 
+@views.route("/delete/<int:id>", methods=['DELETE'])
+@login_required
+def delete(id):
+    service = GastoService(current_user)
+    service.delete(id)
+    return jsonify({}) 
+
 @views.route("/")
 @views.route("/monthly/")
 @views.route("/monthly/<int:year>")
