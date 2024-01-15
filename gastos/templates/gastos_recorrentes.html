@@ -26,6 +26,13 @@
                             <a href="{{ gasto.to_edit() }}">
                                 <i class="material-icons">search</i>
                             </a>
+                            {% if gasto.belongs_to(current_user) %}
+                            <a href="#" title="Remover gasto" 
+                                    onclick="delete_to('/delete/{{ gasto.id }}', 
+                                             '/recurrent')">
+                                <i class="material-icons">delete_forever</i>                                       
+                            </a>
+                        {% endif %}                                
                         </td>
                     </tr>
                 {% endfor %}
