@@ -14,7 +14,12 @@ $ pip install -r requirements.txt
 $ flask db upgrade
 ```
 
-3 - Run the app
+3 - Seed
+```bash
+$ flask seed
+```
+
+4 - Run the app
 ```bash
 $ flask run
 ```
