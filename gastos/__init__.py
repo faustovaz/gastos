@@ -36,7 +36,7 @@ def create_app():
     def seed():
         from werkzeug.security import generate_password_hash
         from .models import User, Settings
-        passwd = generate_password_hash('gasto123', method='scrypt')
+        passwd = generate_password_hash('gastos1234', method='scrypt')
         database.session.add(User(login='faustovaz', password=passwd))
         database.session.add(User(login='cris', password=passwd))
         database.session.add(Settings(show_only_my_expenses=True, user_id=1))
