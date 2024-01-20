@@ -9,7 +9,7 @@ function post_to(link, kv_data, link_to_go) {
 }
 
 function delete_to(link, link_to_go) {
-    let to_delete = confirm('Tem certeza que deseja remover o registro?');
+    let to_delete = confirm('Tem certeza que deseja remover?');
     if (to_delete){
         fetch(link, {
             method: 'DELETE', 
