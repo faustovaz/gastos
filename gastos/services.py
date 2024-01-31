@@ -54,6 +54,7 @@ class GastoService():
         return all_months
 
     def group_by_month(self, gastos):
+        gastos = sorted(gastos, key=lambda gasto: gasto.quando.month)
         return {month: list(g) for month, g in groupby(gastos, lambda gasto: gasto.quando.month)}
 
     def all_non_recurrent_by_year(self, year):
