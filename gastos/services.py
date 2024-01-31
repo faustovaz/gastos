@@ -91,7 +91,7 @@ class GastoService():
     def all_by_month_and_year(self, month, year):
         all_monthly = self.all_non_recurrent_by_month(month, year)
         recurrents = self.recorrentes_filtered_by(month, year, self.all_recorrentes())
-        return self.remove_duplicates(all_monthly, recurrents)
+        return sorted(self.remove_duplicates(all_monthly, recurrents), key=lambda g: g.quando.day)
 
     def remove_duplicates(self, all_monthly, recorrentes):
         recorrentes_ids = list(map(lambda g: g.gasto_recorrente_id, all_monthly))
