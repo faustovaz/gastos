@@ -83,6 +83,7 @@ class GastoService():
                 .session \
                 .query(Gasto) \
                 .filter(*filters) \
+                .order_by(asc(Gasto.quando)) \
                 .all()
 
     def recorrentes_filtered_by(self, month, year, recorrentes):
