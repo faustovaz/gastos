@@ -28,9 +28,11 @@ def create_app():
 
     from .views import views
     from .auth import auth
+    from .dashboard.views import dashboard
 
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
+    app.register_blueprint(dashboard, url_prefix="/dashboard")
 
     @app.cli.command("seed")
     def seed():
