@@ -81,7 +81,7 @@ def recurrent():
 def add_to_month():
     service = GastoService(current_user)
     data = json.loads(request.data)
-    gasto = service.add_to_month(data['gasto_id'], data['month'])
+    gasto = service.add_to_month(data['gasto_id'], data['month'], data['year'])
     if gasto:
         return jsonify({})
 

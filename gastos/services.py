@@ -104,7 +104,7 @@ class GastoService():
     def find(self, id):
         return database.session.get(Gasto, id)
 
-    def add_to_month(self, id, month):
+    def add_to_month(self, id, month, year):
         gasto = self.find(id)
         if gasto:
             make_transient(gasto)
@@ -112,7 +112,7 @@ class GastoService():
             gasto.id = None
             gasto.recorrente = False
             gasto.parcelas = 0
-            gasto.quando = gasto.quando.replace(month=month)
+            gasto.quando = gasto.quando.replace(month=month, year=year)
             database.session.add(gasto)
             database.session.commit()
             return gasto

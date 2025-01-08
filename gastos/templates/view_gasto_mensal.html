@@ -28,9 +28,9 @@
                         <i class="material-icons">search</i>
                     </a>
                     {% if gasto.recorrente and gasto.belongs_to(current_user) %}
-                        <a href="#" title="Fixar gasto no mês" 
+                        <a href="#" title="Fixar gasto no mêss" 
                                 onclick="post_to('/add_to_month', 
-                                        {gasto_id: {{ gasto.id }}, month: {{ gastoMensalView.month }}},
+                                        {gasto_id: {{ gasto.id }}, month: {{ gastoMensalView.month }}, year: {{ gastoMensalView.year }}},
                                         '{{ gastoMensalView.link_to_month() }}')">
                             <i class="material-icons">playlist_add</i>                                       
                         </a>
